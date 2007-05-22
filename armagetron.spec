@@ -1,7 +1,7 @@
 %define name		armagetron
 %define sourcename	armagetronad
-%define version		0.2.7.1
-%define release		%mkrel 5
+%define version 	0.2.8.2.1
+%define release 	%mkrel 1
 
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		%{name}
@@ -12,16 +12,9 @@ Group:		Games/Arcade
 
 URL:		http://armagetronad.net/
 
-Source:		http://prdownloads.sourceforge.net/armagetronad/%{sourcename}-%{version}.tar.bz2
+Source: 	http://prdownloads.sourceforge.net/armagetronad/%{sourcename}-%{version}.src.tar.gz
 Source1:	%{name}-png.tar.bz2
 
-#Patch0:	armagetron-configure-fix.patch.bz2
-#Patch2:	armagetron-distrib.patch.bz2
-#Patch3:		armagetron-0.2.6.0-64bit-fixes.patch.bz2
-#Patch4:		%{name}-0.2.4-fixes.patch.bz2
-#Patch5:		armagetron-0.2.6.0-gcc3_4.patch.bz2
-#Patch6:		armagetron-0.2.6.0-lib64.patch.bz2
-Patch10:	armagetron-0.2.7.1-gcc4.patch
 BuildRoot:	%{_tmppath}/%{sourcename}-%{version}-buildroot
 BuildRequires:	SDL_image-devel
 BuildRequires:	XFree86-devel
@@ -29,7 +22,6 @@ BuildRequires:	alsa-lib-devel
 BuildRequires:	esound-devel
 BuildRequires:	libMesaGLU-devel
 BuildRequires:	libpng-devel
-BuildRequires:	autoconf2.1
 #(peroyvind) dunno what this is nor why it's required, but we don't have it and it shouldn't be required
 %define	_requires_exceptions	BEGIN_RIM
 
@@ -38,26 +30,34 @@ Another very nice and networked Tron game using OpenGL. Armagetron Advanced is
 the continuation of the original Armagetron game.
 
 %prep
-
 %setup -q -n %{sourcename}-%{version}
-%patch10 -p0 -b .gcc4
-autoconf
 
 %build
-%configure2_5x
+%configure \
+	--bindir=%{_gamesbindir} \
+	--datadir=%{_gamesdatadir} \
+	--disable-games
 
 %make "-I. -I.. -I../.. `sdl-config --cflags` $RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT%{_gamesbindir}
+
+make DESTDIR=$RPM_BUILD_ROOT install
+mv $RPM_BUILD_ROOT%{_gamesdatadir}/doc $RPM_BUILD_ROOT%{_datadir}
+
+# remove unwanted files
+rm -f $RPM_BUILD_ROOT%{_gamesbindir}/armagetronad-uninstall
+rm -rf $RPM_BUILD_ROOT%{_gamesdatadir}/%{sourcename}/{desktop,scripts}
+rm -rf $RPM_BUILD_ROOT%{_datadir}/{applnk,icons}
+
 cat <<EOF >$RPM_BUILD_ROOT%{_gamesbindir}/%{name}
 #!/bin/sh -e
 
-REALTRON=%{_gamesbindir}/%{name}.real
+REALTRON=%{_gamesbindir}/%{sourcename}
 
-DATADIR=%{_gamesdatadir}/%{name}
-CONFDIR=%{_sysconfdir}/%{name}
+DATADIR=%{_gamesdatadir}/%{sourcename}
+CONFDIR=%{_sysconfdir}/%{sourcename}
 USERCONFDIR=\$HOME/.%{name}
 USERDATADIR=\$USERCONFDIR/data
 VARDIR=%{_localstatedir}/games/%{name}
@@ -77,14 +77,7 @@ fi
 exec \$REALTRON \$CMDLINE "\$@"
 EOF
 
-install -m0755 src/tron/%{sourcename} $RPM_BUILD_ROOT%{_gamesbindir}/%{name}.real
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/games/%{name}
-mkdir -p $RPM_BUILD_ROOT%{_gamesdatadir}/%{name}
-cp -a arenas models sound textures language \
-	$RPM_BUILD_ROOT%{_gamesdatadir}/%{name}
-rm -f $RPM_BUILD_ROOT%{_gamesdatadir}/%{name}/language/.tag
-chmod -R a+r $RPM_BUILD_ROOT%{_gamesdatadir}/%{name}
-chmod a+r COPYING.txt README
 
 tar xjf %{SOURCE1}
 install -m0644 %{name}-16.png -D $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
@@ -104,24 +97,21 @@ Type=Application
 Categories=Game;ArcadeGame;X-MandrivaLinux-MoreApplications-Games-Arcade;
 EOF
 
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
-cp -a config/* $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc COPYING.txt README
+%doc AUTHORS COPYING NEWS README
 %attr(0755,root,games) %{_gamesbindir}/%{name}
-%attr(2755,root,games) %{_gamesbindir}/%{name}.real
-%{_gamesdatadir}/%{name}
+%attr(2755,root,games) %{_gamesbindir}/%{sourcename}
+%{_gamesdatadir}/%{sourcename}
 %dir %attr(0775,games,games) %{_localstatedir}/games/%{name}
-%dir %{_sysconfdir}/%{name}
-%config(noreplace) %{_sysconfdir}/%{name}/*
+%dir %{_sysconfdir}/%{sourcename}
+%config(noreplace) %{_sysconfdir}/%{sourcename}/*
 %{_miconsdir}/%{name}.png
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
 %{_datadir}/applications/mandriva-%{name}.desktop
-
+%{_defaultdocdir}/%{sourcename}
 
