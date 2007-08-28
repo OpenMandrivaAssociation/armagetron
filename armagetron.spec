@@ -87,7 +87,6 @@ install -m0644 %{name}-48.png -D $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
 install -d %{buildroot}%{_datadir}/applications
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=Armagetron Advanced
 Comment=Another 3d lightcycle game
 Exec=soundwrapper %_gamesbindir/%{name}
