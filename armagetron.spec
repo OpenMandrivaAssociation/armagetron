@@ -17,7 +17,7 @@ Source1:	%{name}-png.tar.bz2
 
 BuildRoot:	%{_tmppath}/%{sourcename}-%{version}-buildroot
 BuildRequires:	SDL_image-devel
-BuildRequires:	XFree86-devel
+BuildRequires:	X11-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	esound-devel
 BuildRequires:	libMesaGLU-devel
