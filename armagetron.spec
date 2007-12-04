@@ -1,7 +1,7 @@
 %define name		armagetron
 %define sourcename	armagetronad
 %define version 	0.2.8.2.1
-%define release 	%mkrel 2
+%define release 	%mkrel 3
 
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		%{name}
@@ -60,7 +60,7 @@ DATADIR=%{_gamesdatadir}/%{sourcename}
 CONFDIR=%{_sysconfdir}/%{sourcename}
 USERCONFDIR=\$HOME/.%{name}
 USERDATADIR=\$USERCONFDIR/data
-VARDIR=%{_localstatedir}/games/%{name}
+VARDIR=\$HOME/.%{name}
 if [ ! -d \$USERCONFDIR ]; then
 	# have to create configuration directory
 	install -d \$USERCONFDIR
@@ -76,8 +76,6 @@ if [ -d \$USERDATADIR ]; then
 fi
 exec \$REALTRON \$CMDLINE "\$@"
 EOF
-
-mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/games/%{name}
 
 tar xjf %{SOURCE1}
 install -m0644 %{name}-16.png -D $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
@@ -105,7 +103,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,games) %{_gamesbindir}/%{name}
 %attr(2755,root,games) %{_gamesbindir}/%{sourcename}
 %{_gamesdatadir}/%{sourcename}
-%dir %attr(0775,games,games) %{_localstatedir}/games/%{name}
 %dir %{_sysconfdir}/%{sourcename}
 %config(noreplace) %{_sysconfdir}/%{sourcename}/*
 %{_miconsdir}/%{name}.png
