@@ -15,7 +15,6 @@ URL:		http://armagetronad.net/
 Source: 	http://prdownloads.sourceforge.net/armagetronad/%{sourcename}-%{version}.src.tar.gz
 Source1:	%{name}-png.tar.bz2
 
-BuildRoot:	%{_tmppath}/%{sourcename}-%{version}-buildroot
 BuildRequires:	SDL_image-devel
 BuildRequires:	X11-devel
 BuildRequires:	alsa-lib-devel
