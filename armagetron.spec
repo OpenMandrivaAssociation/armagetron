@@ -20,7 +20,7 @@ BuildRequires:	SDL_image-devel
 BuildRequires:	X11-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	esound-devel
-BuildRequires:	libMesaGLU-devel
+BuildRequires:	mesaglu-devel
 BuildRequires:	libpng-devel
 #(peroyvind) dunno what this is nor why it's required, but we don't have it and it shouldn't be required
 %define	_requires_exceptions	BEGIN_RIM
