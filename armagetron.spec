@@ -108,4 +108,6 @@ rm -rf %{buildroot}
 %{_liconsdir}/%{name}.png
 %{_datadir}/applications/mandriva-%{name}.desktop
 %{_defaultdocdir}/%{sourcename}
-
+/opt/kde3/share/applnk/armagetronad.desktop
+/opt/kde3/share/icons/armagetronad.png
+      
