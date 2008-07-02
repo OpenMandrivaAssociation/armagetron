@@ -1,39 +1,37 @@
-%define name		armagetron
+#(peroyvind) dunno what this is nor why it's required, but we don't have it and it shouldn't be required
+%define	_requires_exceptions	BEGIN_RIM
+
 %define sourcename	armagetronad
-%define version 	0.2.8.2.1
-%define release 	%mkrel 5
 
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		armagetron
+Version:	0.2.8.2.1
+Release:	%mkrel 5
 License:	GPL
 Group:		Games/Arcade
-
 URL:		http://armagetronad.net/
-
 Source: 	http://prdownloads.sourceforge.net/armagetronad/%{sourcename}-%{version}.src.tar.gz
 Source1:	%{name}-png.tar.bz2
-
-BuildRoot:	%{_tmppath}/%{sourcename}-%{version}-buildroot
+Patch0:		armagetronad-gcc43.diff
 BuildRequires:	SDL_image-devel
 BuildRequires:	X11-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	esound-devel
 BuildRequires:	mesaglu-devel
 BuildRequires:	libpng-devel
-#(peroyvind) dunno what this is nor why it's required, but we don't have it and it shouldn't be required
-%define	_requires_exceptions	BEGIN_RIM
+BuildRoot:	%{_tmppath}/%{sourcename}-%{version}-buildroot
 
 %description
 Another very nice and networked Tron game using OpenGL. Armagetron Advanced is
 the continuation of the original Armagetron game.
 
 %prep
+
 %setup -q -n %{sourcename}-%{version}
+%patch0 -p1
 
 %build
-%configure \
+%configure2_5x \
 	--bindir=%{_gamesbindir} \
 	--datadir=%{_gamesdatadir} \
 	--disable-games
@@ -41,17 +39,17 @@ the continuation of the original Armagetron game.
 %make "-I. -I.. -I../.. `sdl-config --cflags` $RPM_OPT_FLAGS"
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-make DESTDIR=$RPM_BUILD_ROOT install
-mv $RPM_BUILD_ROOT%{_gamesdatadir}/doc $RPM_BUILD_ROOT%{_datadir}
+make DESTDIR=%{buildroot} install
+mv %{buildroot}%{_gamesdatadir}/doc %{buildroot}%{_datadir}
 
 # remove unwanted files
-rm -f $RPM_BUILD_ROOT%{_gamesbindir}/armagetronad-uninstall
-rm -rf $RPM_BUILD_ROOT%{_gamesdatadir}/%{sourcename}/{desktop,scripts}
-rm -rf $RPM_BUILD_ROOT%{_datadir}/{applnk,icons}
+rm -f %{buildroot}%{_gamesbindir}/armagetronad-uninstall
+rm -rf %{buildroot}%{_gamesdatadir}/%{sourcename}/{desktop,scripts}
+rm -rf %{buildroot}%{_datadir}/{applnk,icons}
 
-cat <<EOF >$RPM_BUILD_ROOT%{_gamesbindir}/%{name}
+cat <<EOF >%{buildroot}%{_gamesbindir}/%{name}
 #!/bin/sh -e
 
 REALTRON=%{_gamesbindir}/%{sourcename}
@@ -78,9 +76,9 @@ exec \$REALTRON \$CMDLINE "\$@"
 EOF
 
 tar xjf %{SOURCE1}
-install -m0644 %{name}-16.png -D $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
-install -m0644 %{name}-32.png -D $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
-install -m0644 %{name}-48.png -D $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
+install -m0644 %{name}-16.png -D %{buildroot}%{_miconsdir}/%{name}.png
+install -m0644 %{name}-32.png -D %{buildroot}%{_iconsdir}/%{name}.png
+install -m0644 %{name}-48.png -D %{buildroot}%{_liconsdir}/%{name}.png
 
 install -d %{buildroot}%{_datadir}/applications
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
@@ -95,7 +93,7 @@ Categories=Game;ArcadeGame;X-MandrivaLinux-MoreApplications-Games-Arcade;
 EOF
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
