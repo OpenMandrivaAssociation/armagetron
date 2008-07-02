@@ -1,7 +1,7 @@
 %define name		armagetron
 %define sourcename	armagetronad
 %define version 	0.2.8.2.1
-%define release 	%mkrel 4
+%define release 	%mkrel 5
 
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		%{name}
