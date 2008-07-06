@@ -48,6 +48,7 @@ mv %{buildroot}%{_gamesdatadir}/doc %{buildroot}%{_datadir}
 rm -f %{buildroot}%{_gamesbindir}/armagetronad-uninstall
 rm -rf %{buildroot}%{_gamesdatadir}/%{sourcename}/{desktop,scripts}
 rm -rf %{buildroot}%{_datadir}/{applnk,icons}
+rm -rf %{buildroot}/opt/kde3/share/{applnk,icons}
 
 cat <<EOF >%{buildroot}%{_gamesbindir}/%{name}
 #!/bin/sh -e
@@ -108,6 +109,4 @@ rm -rf %{buildroot}
 %{_liconsdir}/%{name}.png
 %{_datadir}/applications/mandriva-%{name}.desktop
 %{_defaultdocdir}/%{sourcename}
-/opt/kde3/share/applnk/armagetronad.desktop
-/opt/kde3/share/icons/armagetronad.png
-      
+
