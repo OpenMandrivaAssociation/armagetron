@@ -6,7 +6,7 @@
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		armagetron
 Version:	0.2.8.2.1
-Release:	%mkrel 6
+Release:	%mkrel 7
 License:	GPL
 Group:		Games/Arcade
 URL:		http://armagetronad.net/
@@ -53,27 +53,24 @@ rm -rf %{buildroot}/opt/kde3/share/{applnk,icons}
 cat <<EOF >%{buildroot}%{_gamesbindir}/%{name}
 #!/bin/sh -e
 
-REALTRON=%{_gamesbindir}/%{sourcename}
+REALTRON=/usr/games/armagetronad
+USERCONFDIR=\$HOME/.armagetronad/var
 
-DATADIR=%{_gamesdatadir}/%{sourcename}
-CONFDIR=%{_sysconfdir}/%{sourcename}
-USERCONFDIR=\$HOME/.%{name}
-USERDATADIR=\$USERCONFDIR/data
-VARDIR=\$HOME/.%{name}
-if [ ! -d \$USERCONFDIR ]; then
-	# have to create configuration directory
-	install -d \$USERCONFDIR
-fi
-if [ -f \$HOME/.%{name}rc ]; then
-	# upgrade from before 0.2
-	mv -f \$HOME/.%{name}rc \$USERCONFDIR/user.cfg
+
+# migrate from before 0.2.8.2.1-7mdv
+if [ -d \$HOME/.armagetron -a ! -d \$USERCONFDIR ]
+then
+	mkdir -p \$HOME/.armagetronad
+        mv \$HOME/.armagetron \$USERCONFDIR
 fi
 
-CMDLINE="--datadir \$DATADIR --configdir \$CONFDIR --userconfigdir \$USERCONFDIR --vardir \$VARDIR"
-if [ -d \$USERDATADIR ]; then
-	CMDLINE="\$CMDLINE --userdatadir \$USERDATADIR"
+if [ -f \$HOME/.armagetronrc ]; then
+        # upgrade from before 0.2
+        mkdir -p \$USERCONFDIR
+        mv -f \$HOME/.armagetronrc \$USERCONFDIR/user.cfg
 fi
-exec \$REALTRON \$CMDLINE "\$@"
+
+exec \$REALTRON "\$@"
 EOF
 
 tar xjf %{SOURCE1}
