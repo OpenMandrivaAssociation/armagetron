@@ -6,13 +6,14 @@
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		armagetron
 Version:	0.2.8.2.1
-Release:	%mkrel 7
+Release:	%mkrel 8
 License:	GPL
 Group:		Games/Arcade
 URL:		http://armagetronad.net/
 Source: 	http://prdownloads.sourceforge.net/armagetronad/%{sourcename}-%{version}.src.tar.gz
 Source1:	%{name}-png.tar.bz2
 Patch0:		armagetronad-gcc43.diff
+Patch1:		armagetronad-0.2.8.2.1-empty-master.srv-fix.patch
 BuildRequires:	SDL_image-devel
 BuildRequires:	X11-devel
 BuildRequires:	alsa-lib-devel
@@ -28,7 +29,8 @@ the continuation of the original Armagetron game.
 %prep
 
 %setup -q -n %{sourcename}-%{version}
-%patch0 -p1
+%patch0 -p1 -b .gcc43
+%patch1 -p1 -b .empty-master.srv
 
 %build
 %configure2_5x \
@@ -53,24 +55,28 @@ rm -rf %{buildroot}/opt/kde3/share/{applnk,icons}
 cat <<EOF >%{buildroot}%{_gamesbindir}/%{name}
 #!/bin/sh -e
 
-REALTRON=/usr/games/armagetronad
-USERCONFDIR=\$HOME/.armagetronad/var
+REALTRON=%{_gamesbindir}/%{sourcename}
 
-
-# migrate from before 0.2.8.2.1-7mdv
-if [ -d \$HOME/.armagetron -a ! -d \$USERCONFDIR ]
-then
-	mkdir -p \$HOME/.armagetronad
-        mv \$HOME/.armagetron \$USERCONFDIR
+DATADIR=%{_gamesdatadir}/%{sourcename}
+CONFDIR=%{_sysconfdir}/%{sourcename}
+USERCONFDIR=\$HOME/.%{name}
+USERDATADIR=\$USERCONFDIR/data
+VARDIR=\$HOME/.%{name}
+AUTORESOURCEDIR=\$HOME/.%{name}/resource
+if [ ! -d \$USERCONFDIR ]; then
+	# have to create configuration directory
+	install -d \$USERCONFDIR
+fi
+if [ -f \$HOME/.%{name}rc ]; then
+	# upgrade from before 0.2
+	mv -f \$HOME/.%{name}rc \$USERCONFDIR/user.cfg
 fi
 
-if [ -f \$HOME/.armagetronrc ]; then
-        # upgrade from before 0.2
-        mkdir -p \$USERCONFDIR
-        mv -f \$HOME/.armagetronrc \$USERCONFDIR/user.cfg
+CMDLINE="--datadir \$DATADIR --configdir \$CONFDIR --userconfigdir \$USERCONFDIR --vardir \$VARDIR --autoresourcedir \$AUTORESOURCEDIR"
+if [ -d \$USERDATADIR ]; then
+	CMDLINE="\$CMDLINE --userdatadir \$USERDATADIR"
 fi
-
-exec \$REALTRON "\$@"
+exec \$REALTRON \$CMDLINE "\$@"
 EOF
 
 tar xjf %{SOURCE1}
