@@ -6,7 +6,7 @@
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		armagetron
 Version:	0.2.8.2.1
-Release:	%mkrel 8
+Release:	%mkrel 9
 License:	GPL
 Group:		Games/Arcade
 URL:		http://armagetronad.net/
@@ -70,6 +70,10 @@ fi
 if [ -f \$HOME/.%{name}rc ]; then
 	# upgrade from before 0.2
 	mv -f \$HOME/.%{name}rc \$USERCONFDIR/user.cfg
+fi
+# remove empty master.srv file created by earlier revisions
+if [ -r \$USERCONFDIR/master.srv ] && ! [ -s \$USERCONFDIR/master.srv ]; then
+  rm -f \$USERCONFDIR/master.srv
 fi
 
 CMDLINE="--datadir \$DATADIR --configdir \$CONFDIR --userconfigdir \$USERCONFDIR --vardir \$VARDIR --autoresourcedir \$AUTORESOURCEDIR"
