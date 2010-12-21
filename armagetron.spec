@@ -15,11 +15,9 @@ Source1:	%{name}-png.tar.bz2
 Patch0:		armagetronad-gcc43.diff
 Patch1:		armagetronad-0.2.8.2.1-empty-master.srv-fix.patch
 BuildRequires:	SDL_image-devel
-BuildRequires:	X11-devel
-BuildRequires:	alsa-lib-devel
-BuildRequires:	esound-devel
 BuildRequires:	mesaglu-devel
 BuildRequires:	libpng-devel
+BuildRequires:	libxml2-devel
 BuildRoot:	%{_tmppath}/%{sourcename}-%{version}-buildroot
 
 %description
