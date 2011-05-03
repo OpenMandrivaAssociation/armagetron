@@ -31,6 +31,7 @@ the continuation of the original Armagetron game.
 %patch1 -p1 -b .empty-master.srv
 
 %build
+export CXXFLAGS="%optflags -fpermissive"
 %configure2_5x \
 	--bindir=%{_gamesbindir} \
 	--datadir=%{_gamesdatadir} \
