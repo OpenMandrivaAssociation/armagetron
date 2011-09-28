@@ -5,15 +5,15 @@
 
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		armagetron
-Version:	0.2.8.2.1
-Release:	%mkrel 13
+Version:	0.2.8.3.2
+Release:	%mkrel 1
 License:	GPL
 Group:		Games/Arcade
 URL:		http://armagetronad.net/
-Source: 	http://prdownloads.sourceforge.net/armagetronad/%{sourcename}-%{version}.src.tar.gz
+Source: 	http://prdownloads.sourceforge.net/armagetronad/%{sourcename}-%{version}.src.tar.bz2
 Source1:	%{name}-png.tar.bz2
-Patch0:		armagetronad-gcc43.diff
-Patch1:		armagetronad-0.2.8.2.1-empty-master.srv-fix.patch
+Patch0:         armagetronad-0.2.8.3.1-empty-master.srv-fix.patch
+Patch1:         armagetron-0.2.8.3.2-libpng1.5.patch
 BuildRequires:	SDL_image-devel
 BuildRequires:	mesaglu-devel
 BuildRequires:	libpng-devel
@@ -25,19 +25,18 @@ Another very nice and networked Tron game using OpenGL. Armagetron Advanced is
 the continuation of the original Armagetron game.
 
 %prep
-
 %setup -q -n %{sourcename}-%{version}
-%patch0 -p1 -b .gcc43
-%patch1 -p1 -b .empty-master.srv
+%patch0 -p0 -b .empty-master.srv
+%patch1 -p0 -b .libpng
 
 %build
-export CXXFLAGS="%optflags -fpermissive"
+export CXXFLAGS="%{optflags} -fpermissive"
 %configure2_5x \
 	--bindir=%{_gamesbindir} \
 	--datadir=%{_gamesdatadir} \
 	--disable-games
 
-%make "-I. -I.. -I../.. `sdl-config --cflags` $RPM_OPT_FLAGS"
+%make "-I. -I.. -I../.. `sdl-config --cflags` %{optflags}"
 
 %install
 rm -rf %{buildroot}
@@ -92,7 +91,7 @@ cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
 Name=Armagetron Advanced
 Comment=Another 3d lightcycle game
-Exec=soundwrapper %_gamesbindir/%{name}
+Exec=soundwrapper %{_gamesbindir}/%{name}
 Icon=%{name}
 Terminal=false
 Type=Application
