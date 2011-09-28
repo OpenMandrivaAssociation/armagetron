@@ -30,6 +30,7 @@ the continuation of the original Armagetron game.
 %patch1 -p0 -b .libpng
 
 %build
+autoreconf -fi
 export CXXFLAGS="%{optflags} -fpermissive"
 %configure2_5x \
 	--bindir=%{_gamesbindir} \
