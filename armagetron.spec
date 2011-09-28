@@ -6,7 +6,7 @@
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		armagetron
 Version:	0.2.8.3.2
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		Games/Arcade
 URL:		http://armagetronad.net/
@@ -35,7 +35,8 @@ export CXXFLAGS="%{optflags} -fpermissive"
 %configure2_5x \
 	--bindir=%{_gamesbindir} \
 	--datadir=%{_gamesdatadir} \
-	--disable-games
+	--disable-games \
+	--disable-uninstall
 
 %make "-I. -I.. -I../.. `sdl-config --cflags` %{optflags}"
 
@@ -46,7 +47,6 @@ make DESTDIR=%{buildroot} install
 mv %{buildroot}%{_gamesdatadir}/doc %{buildroot}%{_datadir}
 
 # remove unwanted files
-rm -f %{buildroot}%{_gamesbindir}/armagetronad-uninstall
 rm -rf %{buildroot}%{_gamesdatadir}/%{sourcename}/{desktop,scripts}
 rm -rf %{buildroot}%{_datadir}/{applnk,icons}
 rm -rf %{buildroot}/opt/kde3/share/{applnk,icons}
