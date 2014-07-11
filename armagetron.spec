@@ -3,7 +3,7 @@
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		armagetron
 Version:	0.2.8.2.1
-Release:	21
+Release:	22
 License:	GPL
 Group:		Games/Arcade
 URL:		http://armagetronad.net/
