@@ -15,6 +15,8 @@ BuildRequires:	pkgconfig(SDL_image)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	gcc-c++, gcc, gcc-cpp
+
 
 %description
 Another very nice and networked Tron game using OpenGL. Armagetron Advanced is
@@ -26,8 +28,11 @@ the continuation of the original Armagetron game.
 %patch1 -p1 -b .empty-master.srv
 
 %build
+export CC=gcc
+export CXX=g++
+
 export CXXFLAGS="%optflags -fpermissive"
-%configure2_5x \
+%configure \
 	--bindir=%{_gamesbindir} \
 	--datadir=%{_gamesdatadir} \
 	--disable-games
