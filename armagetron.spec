@@ -2,19 +2,19 @@
 
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		armagetron
-Version:	0.2.8.2.1
-Release:	17
+Version:	0.2.8.3.3
+Release:	0.1
 License:	GPL
 Group:		Games/Arcade
 URL:		http://armagetronad.net/
 Source: 	http://prdownloads.sourceforge.net/armagetronad/%{sourcename}-%{version}.src.tar.gz
 Source1:	%{name}-png.tar.bz2
-Patch0:		armagetronad-gcc43.diff
-Patch1:		armagetronad-0.2.8.2.1-empty-master.srv-fix.patch
 BuildRequires:	pkgconfig(SDL_image)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	gcc-c++, gcc, gcc-cpp
+
 
 %description
 Another very nice and networked Tron game using OpenGL. Armagetron Advanced is
@@ -22,10 +22,12 @@ the continuation of the original Armagetron game.
 
 %prep
 %setup -q -n %{sourcename}-%{version}
-%patch0 -p1 -b .gcc43
-%patch1 -p1 -b .empty-master.srv
+%apply_patches
 
 %build
+export CC=gcc
+export CXX=g++
+
 export CXXFLAGS="%optflags -fpermissive"
 %configure2_5x \
 	--bindir=%{_gamesbindir} \
