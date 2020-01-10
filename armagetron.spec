@@ -22,7 +22,7 @@ the continuation of the original Armagetron game.
 
 %prep
 %setup -q -n %{sourcename}-%{version}
-%apply_patches
+%autopatch -p1
 
 %build
 export CC=gcc
