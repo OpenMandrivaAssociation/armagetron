@@ -2,12 +2,12 @@
 
 Summary:	Armagetron Advanced, another 3d lightcycle game using OpenGL
 Name:		armagetron
-Version:	0.2.8.3.4
-Release:	3
+Version:	0.2.9.1.0
+Release:	1
 License:	GPL
 Group:		Games/Arcade
 URL:		http://armagetronad.net/
-Source: 	http://prdownloads.sourceforge.net/armagetronad/%{sourcename}-%{version}.src.tar.gz
+Source: 	https://launchpad.net/armagetronad/%(echo %{version}|cut -d. -f1-3)/%{version}/+download/armagetronad-%{version}.tbz
 Source1:	%{name}-png.tar.bz2
 BuildRequires:	pkgconfig(SDL_image)
 BuildRequires:	pkgconfig(glu)
@@ -21,12 +21,11 @@ Another very nice and networked Tron game using OpenGL. Armagetron Advanced is
 the continuation of the original Armagetron game.
 
 %prep
-%setup -q -n %{sourcename}-%{version}
-%autopatch -p1
+%autosetup -p1 -n %{sourcename}-%{version}
 
 %build
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 
 export CXXFLAGS="%optflags -fpermissive"
 %configure \
@@ -106,4 +105,4 @@ EOF
 %{_liconsdir}/%{name}.png
 %{_datadir}/applications/mandriva-%{name}.desktop
 %{_defaultdocdir}/%{sourcename}
-
+%{_datadir}/metainfo/armagetronad.appdata.xml
