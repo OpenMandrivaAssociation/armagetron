@@ -6,7 +6,7 @@ Version:	0.2.9.1.0
 Release:	2
 License:	GPL
 Group:		Games/Arcade
-URL:		http://armagetronad.net/
+URL:		https://armagetronad.net/
 Source: 	https://launchpad.net/armagetronad/%(echo %{version}|cut -d. -f1-3)/%{version}/+download/armagetronad-%{version}.tbz
 Source1:	%{name}-png.tar.bz2
 BuildRequires:	pkgconfig(SDL_image)
