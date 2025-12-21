@@ -9,6 +9,11 @@ Group:		Games/Arcade
 URL:		https://armagetronad.net/
 Source: 	https://launchpad.net/armagetronad/%(echo %{version}|cut -d. -f1-3)/%{version}/+download/armagetronad-%{version}.tbz
 Source1:	%{name}-png.tar.bz2
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(SDL_image)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(libpng)
