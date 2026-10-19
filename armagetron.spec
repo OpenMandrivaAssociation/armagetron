@@ -46,6 +46,10 @@ export CXXFLAGS="%optflags -fpermissive"
 %makeinstall_std
 mv %{buildroot}%{_gamesdatadir}/doc %{buildroot}%{_datadir}
 
+# Upstream installs appdata next to the in-game desktop files, which this
+# package does not ship. Put it where metainfo consumers look.
+install -D -m0644 desktop/armagetronad.appdata.xml %{buildroot}%{_datadir}/metainfo/armagetronad.appdata.xml
+
 # remove unwanted files
 rm -f %{buildroot}%{_gamesbindir}/armagetronad-uninstall
 rm -rf %{buildroot}%{_gamesdatadir}/%{sourcename}/{desktop,scripts}
