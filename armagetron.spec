@@ -18,6 +18,8 @@ BuildRequires:	pkgconfig(SDL_image)
 BuildRequires:	pkgconfig(glu)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libxml-2.0)
+# libxml2 has no nanoHTTP, so configure requires libcurl
+BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	gcc-c++, gcc, gcc-cpp
 
 
