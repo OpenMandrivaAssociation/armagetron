@@ -52,6 +52,11 @@ install -D -m0644 desktop/armagetronad.appdata.xml %{buildroot}%{_datadir}/metai
 
 # remove unwanted files
 rm -f %{buildroot}%{_gamesbindir}/armagetronad-uninstall
+# sysinstall drops a dangling master symlink and moves the upstream
+# desktop and appdata here. This package ships its own launcher.
+rm -f %{buildroot}%{_gamesbindir}/armagetronad-master
+rm -f %{buildroot}%{_datadir}/applications/org.armagetronad.armagetronad.desktop
+rm -f %{buildroot}%{_datadir}/appdata/org.armagetronad.armagetronad.appdata.xml
 rm -rf %{buildroot}%{_gamesdatadir}/%{sourcename}/{desktop,scripts}
 rm -rf %{buildroot}%{_datadir}/{applnk,icons}
 rm -rf %{buildroot}/opt/kde3/share/{applnk,icons}
